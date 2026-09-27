@@ -26,7 +26,10 @@ button,input{font:inherit;color:inherit}
 .scroller{position:relative;flex:1 1 auto;overflow:auto;-webkit-overflow-scrolling:touch}
 .pages{display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px 12px 40px;width:max-content;min-width:100%}
 .page{position:relative;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.35)}
-.page canvas{display:block;width:100%;height:100%}
+.page canvas.pv{position:absolute;inset:0;display:block;width:100%;height:100%}
+.page .strips{position:absolute;inset:0;z-index:1}
+.page .strip{position:absolute;overflow:hidden}
+.page .strip canvas{display:block;width:100%;height:100%}
 .page .num{position:absolute;left:0;top:-1px;transform:translateY(-100%);font-size:.8rem;color:#e6ece8}
 .page .ph{position:absolute;inset:0;display:grid;place-items:center;color:#8a948f;font-size:.9rem}
 .msg{margin:40px auto;max-width:560px;background:#fff;color:#1b2520;padding:16px 18px;border-radius:6px}
@@ -84,25 +87,80 @@ function sizePages(){
   pages.forEach(p=>{ const v=p.page.getViewport({scale}); p.el.style.width=Math.floor(v.width)+'px'; p.el.style.height=Math.floor(v.height)+'px'; p.rendered=0; });
   $('zv').textContent=Math.round(scale/fitScale*100)+'%';
 }
-async function render(p){
-  if(p.rendered===scale||p.busy) return; p.busy=true;
-  const want=scale; const v=p.page.getViewport({scale:want});
-  let out=Math.min(window.devicePixelRatio||1,2);
-  const maxPx=12e6; if(v.width*v.height*out*out>maxPx) out=Math.sqrt(maxPx/(v.width*v.height));
-  const c=document.createElement('canvas'); c.width=Math.floor(v.width*out); c.height=Math.floor(v.height*out);
-  const ctx=c.getContext('2d');
-  try{
-    await p.page.render({canvasContext:ctx,viewport:v,transform:out!==1?[out,0,0,out,0,0]:null}).promise;
-    const tl=document.createElement('div'); tl.className='textLayer'; tl.style.setProperty('--scale-factor',want);
-    const tc=await p.page.getTextContent();
-    const task=lib.renderTextLayer({textContentSource:tc,container:tl,viewport:v});
-    await task.promise;
-    p.el.querySelectorAll('canvas,.textLayer,.ph').forEach(x=>x.remove());
-    p.el.appendChild(c); p.el.appendChild(tl); p.rendered=want;
-  }catch(e){ console.error(e); }
-  p.busy=false;
-  if(p.rendered!==scale&&p.visible) render(p);
+/* Rendering: each page gets a small low-res preview (instant, also shown while zooming)
+   plus sharp horizontal strips rendered at full screen resolution only where the reader is looking.
+   Strips far from view are released, so zooming in stays sharp without exhausting memory. */
+const STRIP_PX=4e6;            // max device pixels per strip canvas (well under every browser's canvas limit)
+const PREVIEW_PX=1.2e6;        // device pixels for the low-res page preview
+let queue=[],running=0;
+function dpr(){ return Math.min(Math.max(window.devicePixelRatio||1,1),3); }
+function enqueue(job){ queue.push(job); pump(); }
+function pump(){
+  while(running<2&&queue.length){
+    const job=queue.shift(); running++;
+    job().catch(e=>console.error(e)).finally(()=>{ running--; pump(); });
+  }
 }
+function paint(p,v,out,canvas,y0,x0){
+  const ctx=canvas.getContext('2d');
+  return p.page.render({canvasContext:ctx,viewport:v,transform:[out,0,0,out,-(x0||0),-y0]}).promise;
+}
+function ensurePreview(p){
+  if(p.preview) return;
+  p.preview=true;
+  enqueue(async()=>{
+    const v1=p.page.getViewport({scale:1}); const k=Math.sqrt(PREVIEW_PX/(v1.width*v1.height));
+    const v=p.page.getViewport({scale:k}); const c=document.createElement('canvas');
+    c.className='pv'; c.width=Math.floor(v.width); c.height=Math.floor(v.height);
+    await paint(p,v,1,c,0);
+    p.el.querySelector('.ph')?.remove(); p.el.prepend(c);
+  });
+}
+function buildStrips(p){
+  const want=scale, out=dpr();
+  if(p.built===want+'@'+out) return;
+  p.built=want+'@'+out;
+  p.el.querySelector('.strips')?.remove();
+  p.strips?.forEach(st=>sio.unobserve(st.el));
+  const v=p.page.getViewport({scale:want});
+  const W=Math.floor(v.width*out), H=Math.floor(v.height*out);
+  const TW=4096;                                   // tile width cap (device px), keeps every canvas within Safari/iOS limits
+  const tw=Math.min(W,TW), sh=Math.max(256,Math.floor(STRIP_PX/tw));
+  const box=document.createElement('div'); box.className='strips';
+  p.strips=[];
+  for(let y0=0;y0<H;y0+=sh) for(let x0=0;x0<W;x0+=tw){
+    const h=Math.min(sh,H-y0), w=Math.min(tw,W-x0);
+    const el=document.createElement('div'); el.className='strip';
+    el.style.top=(y0/out)+'px'; el.style.height=(h/out)+'px'; el.style.left=(x0/out)+'px'; el.style.width=(w/out)+'px';
+    const st={el,p,v,out,x0,y0,h,W:w,key:p.built,canvas:null,busy:false};
+    el._st=st; box.appendChild(el); p.strips.push(st); sio.observe(el);
+  }
+  p.el.appendChild(box);
+  enqueue(()=>textLayer(p,v,want));
+}
+async function textLayer(p,v,want){
+  if(p.tl===want||want!==scale) return;
+  const tl=document.createElement('div'); tl.className='textLayer'; tl.style.setProperty('--scale-factor',want);
+  const tc=p.tc||(p.tc=await p.page.getTextContent());
+  await lib.renderTextLayer({textContentSource:tc,container:tl,viewport:v}).promise;
+  if(want!==scale) return;
+  p.el.querySelector('.textLayer')?.remove(); p.el.appendChild(tl); p.tl=want;
+}
+function drawStrip(st){
+  if(st.canvas||st.busy||st.key!==st.p.built) return;
+  st.busy=true;
+  enqueue(async()=>{
+    if(st.key!==st.p.built||!st.near){ st.busy=false; return; }
+    const c=document.createElement('canvas'); c.width=st.W; c.height=st.h;
+    await paint(st.p,st.v,st.out,c,st.y0,st.x0);
+    st.busy=false;
+    if(st.key!==st.p.built||!st.near){ c.width=0; return; }
+    st.el.appendChild(c); st.canvas=c;
+  });
+}
+function freeStrip(st){ if(st.canvas){ st.canvas.width=0; st.canvas.remove(); st.canvas=null; } }
+let sio=null;
+function render(p){ ensurePreview(p); buildStrips(p); }
 function go(n,smooth){
   n=Math.min(Math.max(1,n),pages.length); const p=pages[n-1];
   $('sc').scrollTo({top:p.el.offsetTop-14,behavior:smooth?'smooth':'auto'}); setCurrent(n);
@@ -126,6 +184,7 @@ function setScale(s,keep){
     }
     base=pages[0].page.getViewport({scale:1});
     fitScale=Math.max(0.1,($('sc').clientWidth-24)/base.width); scale=fitScale; sizePages();
+    sio=new IntersectionObserver(es=>{ es.forEach(e=>{ const st=e.target._st; st.near=e.isIntersecting; if(e.isIntersecting) drawStrip(st); else freeStrip(st); }); },{root:$('sc'),rootMargin:'400px 200px'});
     io=new IntersectionObserver(es=>{ es.forEach(e=>{ const p=pages[e.target.dataset.n-1]; p.visible=e.isIntersecting; if(e.isIntersecting) render(p); }); },{root:$('sc'),rootMargin:'600px 0px'});
     pages.forEach(p=>io.observe(p.el));
     const t=Math.min(targetPage(),doc.numPages); go(t,false);
@@ -147,6 +206,7 @@ $('pg').addEventListener('keydown',e=>{ if(e.key==='Enter') go(parseInt($('pg').
 $('zi').onclick=()=>setScale(scale*1.25,true);
 $('zo').onclick=()=>setScale(scale/1.25,true);
 $('fit').onclick=()=>{ fitScale=Math.max(0.1,($('sc').clientWidth-24)/base.width); setScale(fitScale,true); };
+(function watchDpr(){ const m=matchMedia(`(resolution: ${window.devicePixelRatio||1}dppx)`); m.addEventListener('change',()=>{ pages.filter(p=>p.visible).forEach(render); watchDpr(); },{once:true}); })();
 window.addEventListener('hashchange',()=>go(targetPage(),true));
 </script>
 </body>
