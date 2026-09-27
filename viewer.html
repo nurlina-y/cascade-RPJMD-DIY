@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PDF Cascade RPJMD DIY</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjYyIiBoZWlnaHQ9IjYyIiByeD0iMTEuNSIgZmlsbD0iIzRhNDMzOCIgc3Ryb2tlPSIjOGE3ZjcwIiBzdHJva2Utd2lkdGg9IjIiLz48ZyBmaWxsPSJub25lIiBzdHJva2U9IiNmMWVkZTQiIHN0cm9rZS13aWR0aD0iMyI+PHBhdGggZD0iTTIwIDIwdjI0TTIwIDMyaDEwTTIwIDQ0aDEwTTIwIDIwaDEwIi8+PC9nPjxyZWN0IHg9IjkiIHk9IjE0IiB3aWR0aD0iMTQiIGhlaWdodD0iMTIiIHJ4PSIyIiBmaWxsPSIjZjFlZGU0Ii8+PHJlY3QgeD0iMzAiIHk9IjE0IiB3aWR0aD0iMjQiIGhlaWdodD0iMTIiIHJ4PSIyIiBmaWxsPSIjNUZCRkE1Ii8+PHJlY3QgeD0iMzAiIHk9IjI2LjUiIHdpZHRoPSIyNCIgaGVpZ2h0PSIxMSIgcng9IjIiIGZpbGw9IiM3RkE4RTAiLz48cmVjdCB4PSIzMCIgeT0iMzguNSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjExIiByeD0iMiIgZmlsbD0iI0UwOTU3QSIvPjwvc3ZnPgo=">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC/UlEQVR4nNSXW0gUURjHvzkzOzN7UbuQq5C427aYShfTkuiCRdRDBPUYURQ9lmQRCeqioqxYkUJCQg8FQZAFEREU9LAGkZSSInRRvKzYmpLGam47u3NpjrDLrq5x1h0H+r3MzPd9h+/Pmf85nMNADDdcFXtFSbxOIdgtirLCcWw2aIAghCYYBlGyDF0MSzVX1t3piuSoyIu7+mKNIIjlI96xzN/zAQgKAmgJz3FgNvHg2GSbohnU6nLfbYoKqKo4f09teOrrwLAZdCDP6QgYecN9d+uDSxSe9rnA/Mue3v4M0JGSoq3+NKPpKAqFhWrv2LiuzTGjY98zhHDYxSCa3on/ud7gnohBxYzqds0NR0IwGAS1N8XwPGuNTWzfUQRXrl4DjufiBghBAVpu34K+3k/RWMaZk8DmbiTpByHvOPgfPouL8RxrRYsLnU7nkuYYHMO5WEib/6uWgSQ4UFYG+QWF0e926SekSlICVoOkBLz1eODpk47o94aackiVJR4YHBxcMNxiZHUjx7lYsLFIWa52yQxgl587ezou5qqtj+ZiMX9hIW1mLZAwNzkFfhIByZC97RggmiWqtVg3g6/7MaxYQK7dFp2JCK98ZM0xywn9f1aBd2QUGupr42IlFx4BhRDReEU1cUoCEuHrew5p1jyi2rnJb6C5gOLAR3DMDhDVDgX84AONBRx25oCBpolq7evS4cXnYVixgESrwNDfCaQsJ5TIQdh82ISrAfEMLF4BmLYTBwEhimi8LCuQkoBEvB7wgmM92XFyaNqfMM4Eg6Ef6jMLVkAiUyWDehScQPjGgi8NesPzPDAMTSFJlnvMJiPojcXIgyRK3Yjl6AabLccPOmO3586yPF9Pv/F8GD+0fxdrNltKp2d+GUAH8vMcf0xG1l3V2NaxsDt43vV0Hj+yT8nKzCwKhcNGWVHUM7sIWoL/+Zp0CxQWbJk2mfhGV1N7M47HLeKbrsulIUmqVK/ne0RRUlRzanQ9FyZo1XCKrLxnWNZdWdfSHcn9BQAA//8eZmx4AAAABklEQVQDAG8gCuy+OYwCAAAAAElFTkSuQmCC">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+
+<style>
+:root{color-scheme:light;--bar:#2a2721;--bar-ink:#ece6da;--bg:#6b655b;--btn:#3a352c;--btn-h:#4a443a;--accent:#ddd4c3;--sans:"Source Sans 3","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;background:var(--bg);font:15px/1.4 var(--sans);color:var(--bar-ink);overflow:hidden}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bar{flex:0 0 auto;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding:8px max(12px,env(safe-area-inset-left,0px));padding-top:max(8px,env(safe-area-inset-top,0px));background:var(--bar)}
+.bar .name{font-weight:700;margin-right:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:48ch}
+.grp{display:inline-flex;align-items:center;gap:4px}
+.b{background:var(--btn);border:1px solid #6a6356;border-radius:5px;min-width:36px;min-height:36px;padding:4px 10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;color:var(--bar-ink)}
+.b:hover{background:var(--btn-h)}
+.b:disabled{opacity:.4;cursor:default}
+#pg{width:3.4em;text-align:center;background:#fff;color:#111;border:1px solid #6a6356;border-radius:5px;min-height:36px}
+#zv{min-width:3.4em;text-align:center;font-variant-numeric:tabular-nums}
+.scroller{position:relative;flex:1 1 auto;overflow:auto;-webkit-overflow-scrolling:touch}
+.pages{display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px 12px 40px;width:max-content;min-width:100%}
+.page{position:relative;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.page canvas{display:block;width:100%;height:100%}
+.page .num{position:absolute;left:0;top:-1px;transform:translateY(-100%);font-size:.8rem;color:#e6ece8}
+.page .ph{position:absolute;inset:0;display:grid;place-items:center;color:#8a948f;font-size:.9rem}
+.msg{margin:40px auto;max-width:560px;background:#fff;color:#1b2520;padding:16px 18px;border-radius:6px}
+/* PDF.js text layer: lets the reader select text and use the browser's own Find */
+.textLayer{position:absolute;text-align:initial;inset:0;overflow:hidden;opacity:.25;line-height:1;-webkit-text-size-adjust:none;text-size-adjust:none;forced-color-adjust:none;transform-origin:0 0;z-index:2}
+.textLayer :is(span,br){color:transparent;position:absolute;white-space:pre;cursor:text;transform-origin:0% 0%}
+.textLayer span.markedContent{top:0;height:0}
+.textLayer ::selection{background:blue;background:AccentColor}
+.textLayer br::selection{background:transparent}
+.textLayer .endOfContent{display:block;position:absolute;inset:100% 0 0;z-index:-1;cursor:default;user-select:none}
+.page.target{outline:4px solid #ff5fa2;outline-offset:3px}
+</style>
+</head>
+<body>
+<div class="bar" role="toolbar" aria-label="Kendali penampil PDF">
+  <span class="name" id="name">Cascade RPJMD DIY 2022–2027 (PDF)</span>
+  <span class="grp"><button class="b" id="prev" aria-label="Halaman sebelumnya">‹</button>
+    <label class="grp">Hlm. <input id="pg" inputmode="numeric" value="1" aria-label="Nomor halaman"> / <span id="pc">–</span></label>
+    <button class="b" id="next" aria-label="Halaman berikutnya">›</button></span>
+  <span class="grp"><button class="b" id="zo" aria-label="Perkecil">−</button><span id="zv">–</span><button class="b" id="zi" aria-label="Perbesar">+</button><button class="b" id="fit">Lebar layar</button></span>
+  <a class="b" id="dl" href="Cascade_RPJMD_DIY_2022-2027.pdf" download>Unduh PDF</a>
+</div>
+<div class="scroller" id="sc"><div class="pages" id="pages" aria-live="polite"></div></div>
+
+<script src="pdfjs/pdf.min.js"></script>
+<script>
+'use strict';
+const PDF_FILE='Cascade_RPJMD_DIY_2022-2027.pdf';
+const $=id=>document.getElementById(id);
+const lib=window['pdfjs-dist/build/pdf'];
+lib.GlobalWorkerOptions.workerSrc='pdfjs/pdf.worker.min.js';
+let doc=null,base=null,scale=1,fitScale=1,pages=[],current=1,io=null;
+
+function targetPage(){
+  const h=(location.hash||'').match(/page=(\d+)/)||(location.search||'').match(/page=(\d+)/);
+  return h?Math.max(1,+h[1]):1;
+}
+function loadEmbedded(){
+  return new Promise((ok,fail)=>{
+    if(window.CASCADE_PDF_B64) return ok(window.CASCADE_PDF_B64);
+    const s=document.createElement('script'); s.src='pdf-data.js';
+    s.onload=()=>window.CASCADE_PDF_B64?ok(window.CASCADE_PDF_B64):fail(new Error('pdf-data.js kosong'));
+    s.onerror=()=>fail(new Error('pdf-data.js tidak ditemukan')); document.head.appendChild(s);
+  });
+}
+function b64bytes(b){ const bin=atob(b); const a=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) a[i]=bin.charCodeAt(i); return a; }
+async function open(){
+  // Online: read the PDF file itself. Opened from a local folder (file://), browsers block that, so use the embedded copy.
+  if(/^https?:$/.test(location.protocol)){
+    try{ return await lib.getDocument({url:PDF_FILE}).promise; }catch(e){ console.warn('PDF file fetch failed, using embedded copy',e); }
+  }
+  return await lib.getDocument({data:b64bytes(await loadEmbedded())}).promise;
+}
+function sizePages(){
+  pages.forEach(p=>{ const v=p.page.getViewport({scale}); p.el.style.width=Math.floor(v.width)+'px'; p.el.style.height=Math.floor(v.height)+'px'; p.rendered=0; });
+  $('zv').textContent=Math.round(scale/fitScale*100)+'%';
+}
+async function render(p){
+  if(p.rendered===scale||p.busy) return; p.busy=true;
+  const want=scale; const v=p.page.getViewport({scale:want});
+  let out=Math.min(window.devicePixelRatio||1,2);
+  const maxPx=12e6; if(v.width*v.height*out*out>maxPx) out=Math.sqrt(maxPx/(v.width*v.height));
+  const c=document.createElement('canvas'); c.width=Math.floor(v.width*out); c.height=Math.floor(v.height*out);
+  const ctx=c.getContext('2d');
+  try{
+    await p.page.render({canvasContext:ctx,viewport:v,transform:out!==1?[out,0,0,out,0,0]:null}).promise;
+    const tl=document.createElement('div'); tl.className='textLayer'; tl.style.setProperty('--scale-factor',want);
+    const tc=await p.page.getTextContent();
+    const task=lib.renderTextLayer({textContentSource:tc,container:tl,viewport:v});
+    await task.promise;
+    p.el.querySelectorAll('canvas,.textLayer,.ph').forEach(x=>x.remove());
+    p.el.appendChild(c); p.el.appendChild(tl); p.rendered=want;
+  }catch(e){ console.error(e); }
+  p.busy=false;
+  if(p.rendered!==scale&&p.visible) render(p);
+}
+function go(n,smooth){
+  n=Math.min(Math.max(1,n),pages.length); const p=pages[n-1];
+  $('sc').scrollTo({top:p.el.offsetTop-14,behavior:smooth?'smooth':'auto'}); setCurrent(n);
+}
+function setCurrent(n){ current=n; $('pg').value=n; $('prev').disabled=n<=1; $('next').disabled=n>=pages.length; }
+function setScale(s,keep){
+  const sc=$('sc'); const rel=keep?(sc.scrollTop/(sc.scrollHeight||1)):0; const relX=sc.scrollLeft/(sc.scrollWidth||1);
+  scale=Math.min(Math.max(s,fitScale*0.25),fitScale*6); sizePages();
+  if(keep){ sc.scrollTop=rel*sc.scrollHeight; sc.scrollLeft=relX*sc.scrollWidth; }
+  pages.filter(p=>p.visible).forEach(render);
+}
+(async function main(){
+  try{
+    doc=await open();
+    $('pc').textContent=doc.numPages;
+    for(let i=1;i<=doc.numPages;i++){
+      const page=await doc.getPage(i);
+      const el=document.createElement('div'); el.className='page'; el.dataset.n=i; el.setAttribute('aria-label','Halaman '+i);
+      el.innerHTML=`<span class="num">Halaman ${i}</span><span class="ph">Memuat halaman ${i}…</span>`;
+      $('pages').appendChild(el); pages.push({page,el,rendered:0,visible:false});
+    }
+    base=pages[0].page.getViewport({scale:1});
+    fitScale=Math.max(0.1,($('sc').clientWidth-24)/base.width); scale=fitScale; sizePages();
+    io=new IntersectionObserver(es=>{ es.forEach(e=>{ const p=pages[e.target.dataset.n-1]; p.visible=e.isIntersecting; if(e.isIntersecting) render(p); }); },{root:$('sc'),rootMargin:'600px 0px'});
+    pages.forEach(p=>io.observe(p.el));
+    const t=Math.min(targetPage(),doc.numPages); go(t,false);
+    pages[t-1].el.classList.add('target'); setTimeout(()=>pages[t-1].el.classList.remove('target'),2500);
+    document.title='Halaman '+t+' · PDF Cascade RPJMD DIY';
+  }catch(e){
+    $('pages').innerHTML=`<div class="msg"><b>PDF tidak dapat ditampilkan.</b><br>${String(e.message||e)}<br><br>Pastikan file <code>${PDF_FILE}</code>, <code>pdf-data.js</code>, dan folder <code>pdfjs</code> berada di folder yang sama dengan halaman ini. Anda tetap dapat <a href="${PDF_FILE}">membuka atau mengunduh PDF</a>.</div>`;
+  }
+})();
+$('sc').addEventListener('scroll',()=>{
+  const sc=$('sc'); const mid=sc.scrollTop+sc.clientHeight/3; let n=1;
+  for(const p of pages){ if(p.el.offsetTop<=mid) n=+p.el.dataset.n; else break; }
+  if(n!==current) setCurrent(n);
+},{passive:true});
+$('prev').onclick=()=>go(current-1,true);
+$('next').onclick=()=>go(current+1,true);
+$('pg').addEventListener('change',()=>go(parseInt($('pg').value,10)||1,true));
+$('pg').addEventListener('keydown',e=>{ if(e.key==='Enter') go(parseInt($('pg').value,10)||1,true); });
+$('zi').onclick=()=>setScale(scale*1.25,true);
+$('zo').onclick=()=>setScale(scale/1.25,true);
+$('fit').onclick=()=>{ fitScale=Math.max(0.1,($('sc').clientWidth-24)/base.width); setScale(fitScale,true); };
+window.addEventListener('hashchange',()=>go(targetPage(),true));
+</script>
+</body>
+</html>
