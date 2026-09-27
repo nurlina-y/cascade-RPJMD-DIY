@@ -1,9 +1,0 @@
-WEB CASCADE RPJMD DIY 2022-2027
-===============================
-
-Isi folder (semua file harus tetap berada dalam satu folder):
-  index.html                          Halaman utama (diagram cascade)
-  viewer.html                         Penampil PDF (PDF.js)
-  Cascade_RPJMD_DIY_2022-2027.pdf     File PDF sumber
-  pdf-data.js                         Salinan PDF untuk dibuka dari komputer lokal
-  pdfjs/pdf.min.js, pdf.worker.min.js PDF.js 3.11.174 (Mozilla, lisensi Apache 2.0 - lihat pdfjs/LICENSE)
