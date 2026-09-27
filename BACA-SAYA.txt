@@ -1,5 +1,5 @@
-PAKET WEB CASCADE RPJMD DIY 2022-2027
-=====================================
+CASCADE RPJMD DIY 2022-2027
+===========================
 
 Isi folder (semua file harus tetap berada dalam satu folder):
   index.html                          Halaman utama (diagram cascade)
@@ -8,22 +8,10 @@ Isi folder (semua file harus tetap berada dalam satu folder):
   pdf-data.js                         Salinan PDF untuk dibuka dari komputer lokal
   pdfjs/pdf.min.js, pdf.worker.min.js PDF.js 3.11.174 (Mozilla, lisensi Apache 2.0 - lihat pdfjs/LICENSE)
 
-Cara mengonlinekan:
-  1. Unggah seluruh isi folder ini apa adanya ke satu folder di server web
-     (misalnya https://domain-anda/cascade/).
-  2. Buka https://domain-anda/cascade/index.html.
-  Tidak perlu pengaturan server khusus. Tautan "hlm. N" dan tombol "Buka PDF"
-  membuka viewer.html di tab baru dan menampilkan halaman PDF tanpa mengunduh file,
-  apa pun pengaturan PDF di browser pembaca.
-
 Cara membuka tanpa server:
-  Klik ganda index.html. Penampil memakai pdf-data.js karena browser tidak
-  mengizinkan halaman lokal membaca file PDF secara langsung.
+  Klik ganda index.html. Penampil memakai pdf-data.js karena browser tidak mengizinkan halaman lokal membaca file PDF secara langsung.
 
 Jika ingin mengganti PDF:
-  Ganti Cascade_RPJMD_DIY_2022-2027.pdf dengan nama yang sama. Untuk pemakaian
-  lokal, pdf-data.js juga harus dibuat ulang dari PDF baru.
+  Ganti Cascade_RPJMD_DIY_2022-2027.pdf dengan nama yang sama. Untuk pemakaian lokal, pdf-data.js juga harus dibuat ulang dari PDF baru.
 
-Catatan: pdf-data.js hanya dipakai saat dibuka tanpa server. Saat online,
-viewer.html membaca file PDF langsung; pdf-data.js hanya dipakai jika PDF
-gagal dimuat.
+Catatan: pdf-data.js hanya dipakai saat dibuka tanpa server. Saat online, viewer.html membaca file PDF langsung; pdf-data.js hanya dipakai jika PDF gagal dimuat.
